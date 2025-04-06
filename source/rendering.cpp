@@ -27,3 +27,60 @@ void renderLoadingAnimation(SDL_Renderer* renderer,
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderFillRect(renderer, &square);
 }
+
+void renderBoard(SDL_Renderer* renderer,
+                 TTF_Font* font,
+                 int x,
+                 int y,
+                 const Board& board,
+                 const int sectorSize) {
+    int boardSize = board.size();
+    int sectorBorder = 1;
+    int sectorFillSize = sectorSize - 2 * sectorBorder;
+
+    int boardOutlineSize = boardSize * sectorSize + 2 * sectorBorder;
+    SDL_Rect boardOutline = {x - sectorBorder,
+                             y - sectorBorder,
+                             boardOutlineSize,
+                             boardOutlineSize};
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderFillRect(renderer, &boardOutline);
+
+    for (int row = 0; row < boardSize; ++row) {
+        for (int col = 0; col < boardSize; ++col) {
+            int sectorX = x + col * sectorSize;
+            int sectorY = y + row * sectorSize;
+
+            SDL_Rect sectorFill = {sectorX + sectorBorder,
+                                   sectorY + sectorBorder,
+                                   sectorFillSize,
+                                   sectorFillSize};
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &sectorFill);
+
+            Token token = board(col, row);
+            if (token != Token::Empty) {
+                std::string symbol;
+                SDL_Color color;
+
+                switch (token) {
+                    case Token::Miss:
+                        symbol = "+"; color = {255, 255, 255, 255}; break;
+                    case Token::PlayerShip:
+                        symbol = "X"; color = {50, 150, 50, 255}; break;
+                    case Token::PlayerShipHit:
+                        symbol = "X"; color = {50, 50, 150, 255}; break;
+                    case Token::EnemyShip:
+                        symbol = "X"; color = {150, 50, 50, 255}; break;
+                    default: break;
+                }
+
+                if (!symbol.empty()) {
+                    int tokenX = sectorX + sectorSize / 2;
+                    int tokenY = sectorY + sectorSize / 2;
+                    renderText(renderer, font, symbol, tokenX, tokenY, color);
+                }
+            }
+        }
+    }
+}
