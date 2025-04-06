@@ -18,12 +18,14 @@ void renderMainMenu(SDL_Renderer* renderer,
     SDL_RenderFillRect(renderer, &button);
 
     if (inQueue) {
-        renderText(renderer, buttonFont, "Odustani", BUTTON_QUIT_X, BUTTON_QUIT_Y, white);
+        renderText(renderer, buttonFont, "Odustani",
+                   BUTTON_X + BUTTON_W / 2, BUTTON_Y + BUTTON_H / 2, white);
 
         renderLoadingAnimation(renderer, LOAD_ANIMATION_X, LOAD_ANIMATION_Y,
                                LOAD_SQUARE_SIZE, LOAD_INTERVAL);
     } else {
-        renderText(renderer, buttonFont, "Igraj", BUTTON_PLAY_X, BUTTON_PLAY_Y, white);
+        renderText(renderer, buttonFont, "Igraj",
+                   BUTTON_X + BUTTON_W / 2, BUTTON_Y + BUTTON_H / 2, white);
     }
 
     SDL_RenderPresent(renderer);

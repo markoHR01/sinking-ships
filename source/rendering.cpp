@@ -8,7 +8,8 @@ void renderText(SDL_Renderer* renderer,
                 SDL_Color color) {
     SDL_Surface* surface = TTF_RenderUTF8_Solid(font, text.c_str(), color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_Rect textureBounds = {x, y, surface->w, surface->h};
+    SDL_Rect textureBounds = {x - surface->w / 2, y - surface->h / 2,
+                              surface->w, surface->h};
     SDL_FreeSurface(surface);
     SDL_RenderCopy(renderer, texture, nullptr, &textureBounds);
     SDL_DestroyTexture(texture);
