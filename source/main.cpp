@@ -5,8 +5,8 @@
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
-TTF_Font* titleFont = nullptr;
-TTF_Font* buttonFont = nullptr;
+TTF_Font* font86 = nullptr;
+TTF_Font* font24 = nullptr;
 
 bool inQueue = false;
 
@@ -18,8 +18,8 @@ int main() {
                               WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    titleFont = TTF_OpenFont("assets/fonts/OpenSans-ExtraBold.ttf", 86);
-    buttonFont = TTF_OpenFont("assets/fonts/OpenSans-ExtraBold.ttf", 24);
+    font86 = TTF_OpenFont("assets/fonts/OpenSans-ExtraBold.ttf", 86);
+    font24 = TTF_OpenFont("assets/fonts/OpenSans-ExtraBold.ttf", 24);
 
     SDL_Event e;
     bool running = true;
@@ -36,12 +36,12 @@ int main() {
                 }
             }
         }
-        renderMainMenu(renderer, titleFont, buttonFont, inQueue);
+        renderMainMenu(renderer, font86, font24, inQueue);
         SDL_Delay(16);
     }
 
-    TTF_CloseFont(titleFont);
-    TTF_CloseFont(buttonFont);
+    TTF_CloseFont(font86);
+    TTF_CloseFont(font24);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_Quit();
