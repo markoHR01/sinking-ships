@@ -13,8 +13,9 @@ enum class Token {
 
 class Board {
     public:
-        explicit Board(int size) : board(size * size, Token::Empty),
-                                   size_(size) {}
+        explicit Board(int size)
+                      : board(size * size, Token::Empty),
+                        size_(size) {}
 
         const Token& operator()(int x, int y) const {
             return board[y * size_ + x];
@@ -29,6 +30,43 @@ class Board {
     private:
         std::vector<Token> board;
         int size_;
+};
+
+struct ShipPart {
+    const int x, y;
+    bool hit;
+
+    ShipPart(int x, int y)
+            : x(x), y(y), hit(false) {}
+};
+
+class Ship {
+    public:
+        Ship(const std::vector<ShipPart>& s)
+            : ship(s) {}
+
+        bool hit(int x, int y) {
+            for (ShipPart& sp : ship) {
+                if (sp.x == x && sp.y == y) {
+                    sp.hit = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        int health() const {
+            int sum = 0;
+            for (const ShipPart& sp : ship) {
+                if (sp.hit == false) {
+                    sum += 1;
+                }
+            }
+            return sum;
+        }
+
+    private:
+        std::vector<ShipPart> ship;
 };
 
 #endif
