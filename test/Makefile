@@ -3,12 +3,12 @@ CXXFLAGS = -Wall -I../include -I../source
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJDIR = build
 
-OBJECTS = build/game.o build/rendering.o build/test_game.o
+OBJECTS = build/setup.o build/rendering.o build/test_game.o
 
 test-game : $(OBJECTS)
 	$(CXX) $(OBJECTS) -o test-game $(LDFLAGS)
 
-$(OBJDIR)/game.o : ../source/game.cpp
+$(OBJDIR)/setup.o : ../source/setup.cpp
 	mkdir -p $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
