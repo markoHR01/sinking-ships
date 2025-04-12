@@ -17,4 +17,14 @@ const int LOAD_ANIMATION_Y = BUTTON_Y - 100;
 const int LOAD_SQUARE_SIZE = 10;
 const int LOAD_INTERVAL = 500;
 
+const int BOARD_SIZE = 10;
+const int SECTOR_SIZE = 35;
+const int BOARD_SETUP_X = 78;
+const int BOARD_SETUP_Y = 135;
+const int SHIP_SETUP_X = 694;
+const int SHIP_SETUP_Y = 190;
+const int SHIP_SETUP_YADD = 55;
+const int TIMER_SETUP_X = WINDOW_WIDTH / 2;
+const int TIMER_SETUP_Y = 576;
+
 #endif
