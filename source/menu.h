@@ -3,10 +3,12 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "fonts.h"
+#include "scene.h"
+#include "game_state.h"
 
-void renderMainMenu(SDL_Renderer* renderer,
-                    TTF_Font* font86,
-                    TTF_Font* font24,
-                    bool inQueue);
+Scene runMainMenu(SDL_Renderer* renderer,
+                  FontSet& fonts,
+                  GameState& gameState);
 
 #endif

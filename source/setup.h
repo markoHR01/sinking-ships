@@ -3,8 +3,12 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "fonts.h"
+#include "scene.h"
+#include "game_state.h"
 
-void renderSetupScene(SDL_Renderer* renderer,
-                      TTF_Font* font28);
+Scene runSetupScene(SDL_Renderer* renderer,
+                    FontSet& fonts,
+                    GameState& gameState);
 
 #endif
