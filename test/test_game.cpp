@@ -1,11 +1,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "setup.h"
+#include "fonts.h"
+#include "scene.h"
+#include "game_state.h"
 #include "constants.h"
+
+#include "setup.h"
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
-TTF_Font* font28 = nullptr;
 
 int main() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -15,20 +18,30 @@ int main() {
                               WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    font28 = TTF_OpenFont("../assets/fonts/OpenSans-ExtraBold.ttf", 28);
+    FontSet fonts;
+    fonts.font86 = TTF_OpenFont("../assets/fonts/OpenSans-ExtraBold.ttf", 86);
+    fonts.font28 = TTF_OpenFont("../assets/fonts/OpenSans-ExtraBold.ttf", 28);
+    fonts.font24 = TTF_OpenFont("../assets/fonts/OpenSans-ExtraBold.ttf", 24);
 
-    SDL_Event e;
+    GameState gameState;
+
+    Scene currentScene = Scene::Setup;
     bool running = true;
-    while(running) {
-        while(SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) running = false;
-        }
 
-        renderSetupScene(renderer, font28);
-        SDL_Delay(16);
+    while(running) {
+        switch (currentScene) {
+            case Scene::Setup:
+                currentScene = runSetupScene(renderer, fonts, gameState);
+                break;
+            case Scene::Quit:
+                running = false;
+                break;
+        }
     }
 
-    TTF_CloseFont(font28);
+    TTF_CloseFont(fonts.font86);
+    TTF_CloseFont(fonts.font28);
+    TTF_CloseFont(fonts.font24);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_Quit();
