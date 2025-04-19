@@ -25,7 +25,7 @@ Scene runSetupScene(SDL_Renderer* renderer,
 
     renderText(renderer, fonts.font28, "5. Nosač Zrakoplova (5X)",
                SHIP_SETUP_X, SHIP_SETUP_Y, green);
-    renderText(renderer, fonts.font28, "4. Bojni brod (4X)",
+    renderText(renderer, fonts.font28, "4. Bojni Brod (4X)",
                SHIP_SETUP_X, SHIP_SETUP_Y + SHIP_SETUP_YADD, green);
     renderText(renderer, fonts.font28, "3. Krstarica (3X)",
                SHIP_SETUP_X, SHIP_SETUP_Y + SHIP_SETUP_YADD * 2, green);
