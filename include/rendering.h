@@ -5,7 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-#include "client.h"
+#include "board.h"
 
 void renderText(SDL_Renderer* renderer,
                 TTF_Font* font,

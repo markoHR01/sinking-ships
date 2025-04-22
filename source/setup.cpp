@@ -1,7 +1,7 @@
 #include "setup.h"
-#include "client.h"
 #include "rendering.h"
 #include "constants.h"
+#include "board.h"
 
 Scene runSetupScene(SDL_Renderer* renderer,
                     FontSet& fonts,

@@ -1,7 +1,7 @@
 #include "game.h"
-#include "client.h"
 #include "rendering.h"
 #include "constants.h"
+#include "board.h"
 
 Scene runGameScene(SDL_Renderer* renderer,
                    FontSet& fonts,
