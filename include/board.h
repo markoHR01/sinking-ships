@@ -13,19 +13,12 @@ enum class Token {
 
 class Board {
     public:
-        explicit Board(int size)
-                      : board(size * size, Token::Empty),
-                        size_(size) {}
+        explicit Board(int size);
 
-        const Token& operator()(int x, int y) const {
-            return board[y * size_ + x];
-        }
+        const Token& operator()(int x, int y) const;
+        void operator()(int x, int y, Token token);
 
-        void operator()(int x, int y, Token token) {
-            board[y * size_ + x] = token;
-        }
-
-        int size() const { return size_; }
+        int size() const;
 
     private:
         std::vector<Token> board;

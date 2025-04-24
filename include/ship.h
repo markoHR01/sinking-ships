@@ -7,34 +7,15 @@ struct ShipPart {
     const int x, y;
     bool hit;
 
-    ShipPart(int x, int y)
-            : x(x), y(y), hit(false) {}
+    ShipPart(int x, int y);
 };
 
 class Ship {
     public:
-        Ship(const std::vector<ShipPart>& s)
-            : ship(s) {}
+        Ship(const std::vector<ShipPart>& s);
 
-        bool hit(int x, int y) {
-            for (ShipPart& sp : ship) {
-                if (sp.x == x && sp.y == y) {
-                    sp.hit = true;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        int health() const {
-            int sum = 0;
-            for (const ShipPart& sp : ship) {
-                if (sp.hit == false) {
-                    sum += 1;
-                }
-            }
-            return sum;
-        }
+        bool hit(int x, int y);
+        int health() const;
 
     private:
         std::vector<ShipPart> ship;

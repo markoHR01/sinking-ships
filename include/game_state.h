@@ -4,7 +4,7 @@
 struct GameState {
     bool inQueue;
 
-    GameState() : inQueue(false) {}
+    GameState();
 };
 
 #endif
