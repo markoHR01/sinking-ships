@@ -6,17 +6,29 @@
 Scene runSetupScene(SDL_Renderer* renderer,
                     FontSet& fonts,
                     GameState& gameState) {
+    Board board(BOARD_SIZE);
+
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             return Scene::Quit;
         }
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+
+            int x = (mouseX - BOARD_SETUP_X) / SECTOR_SIZE;
+            int y = (mouseY - BOARD_SETUP_Y) / SECTOR_SIZE;
+
+            if (x >= 0 && x < BOARD_SIZE &&
+                y >= 0 && y < BOARD_SIZE) {
+                board(x, y, Token::PlayerShip);
+            }
+        }
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-
-    Board board(BOARD_SIZE);
 
     renderBoard(renderer, fonts.font28,
                 BOARD_SETUP_X, BOARD_SETUP_Y, board, SECTOR_SIZE);
