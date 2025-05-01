@@ -33,7 +33,8 @@ Scene runSetupScene(SDL_Renderer* renderer,
                     gameState.shipParts.push_back(ShipPart(x, y));
 
                     int newShipIndex = gameState.playerShips.size();
-                    int newShipSize = SHIP_LIST.at(newShipIndex);
+                    size_t newShipSize = static_cast<size_t>(
+                                         SHIP_LIST.at(newShipIndex));
                     if (gameState.shipParts.size() == newShipSize) {
                         // Missing validation of ShipPart-s
                         gameState.playerShips
@@ -48,8 +49,8 @@ Scene runSetupScene(SDL_Renderer* renderer,
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    renderBoard(renderer, fonts.font28,
-                BOARD_SETUP_X, BOARD_SETUP_Y, board, SECTOR_SIZE);
+    renderBoard(renderer, fonts.font28, BOARD_SETUP_X, BOARD_SETUP_Y,
+                (*gameState.playerBoard), SECTOR_SIZE);
 
     SDL_Color green = {50, 150, 50, 255};
 
