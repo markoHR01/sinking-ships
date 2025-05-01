@@ -1,4 +1,9 @@
 #include "game_state.h"
 
 GameState::GameState()
-           : inQueue(false) {}
+           : inQueue(false),
+             playerBoard(nullptr) {}
+
+GameState::~GameState() {
+    delete playerBoard;
+}
