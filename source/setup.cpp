@@ -6,14 +6,17 @@
 Scene runSetupScene(SDL_Renderer* renderer,
                     FontSet& fonts,
                     GameState& gameState) {
-    Board board(BOARD_SIZE);
+    if (gameState.playerBoard == nullptr) {
+        gameState.playerBoard = new Board(BOARD_SIZE);
+    }
 
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             return Scene::Quit;
         }
-        if (event.type == SDL_MOUSEBUTTONDOWN) {
+        if (event.type == SDL_MOUSEBUTTONDOWN &&
+            gameState.playerShips.size() < SHIP_LIST.size()) {
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
@@ -22,7 +25,22 @@ Scene runSetupScene(SDL_Renderer* renderer,
 
             if (x >= 0 && x < BOARD_SIZE &&
                 y >= 0 && y < BOARD_SIZE) {
-                board(x, y, Token::PlayerShip);
+                Board& playerBoard = *gameState.playerBoard;
+
+                if (playerBoard(x, y) == Token::Empty) {
+                    playerBoard(x, y, Token::PlayerShip);
+
+                    gameState.shipParts.push_back(ShipPart(x, y));
+
+                    int newShipIndex = gameState.playerShips.size();
+                    int newShipSize = SHIP_LIST.at(newShipIndex);
+                    if (gameState.shipParts.size() == newShipSize) {
+                        // Missing validation of ShipPart-s
+                        gameState.playerShips
+                                 .push_back(Ship(gameState.shipParts));
+                        gameState.shipParts.clear();
+                    }
+                }
             }
         }
     }
