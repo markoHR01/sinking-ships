@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <array>
+
 const int WINDOW_WIDTH = 960;
 const int WINDOW_HEIGHT = 720;
 
@@ -30,6 +32,19 @@ const int SHIP_SETUP_Y = 190;
 const int SHIP_SETUP_YADD = 55;
 const int TIMER_SETUP_X = WINDOW_WIDTH / 2;
 const int TIMER_SETUP_Y = 576;
+const int DESTROYER_SIZE = 2;
+const int SUBMARINE_SIZE = 3;
+const int CRUISER_SIZE = 3;
+const int BATTLESHIP_SIZE = 4;
+const int AIRCRAFT_CARRIER_SIZE = 5;
+
+const std::array<int, 5> SHIP_LIST = {
+    DESTROYER_SIZE,
+    SUBMARINE_SIZE,
+    CRUISER_SIZE,
+    BATTLESHIP_SIZE,
+    AIRCRAFT_CARRIER_SIZE
+};
 
 // Game
 
