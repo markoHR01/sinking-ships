@@ -36,9 +36,15 @@ Scene runSetupScene(SDL_Renderer* renderer,
                     size_t newShipSize = static_cast<size_t>(
                                          SHIP_LIST.at(newShipIndex));
                     if (gameState.shipParts.size() == newShipSize) {
-                        // Missing validation of ShipPart-s
-                        gameState.playerShips
-                                 .push_back(Ship(gameState.shipParts));
+                        if (shipIsValid(gameState.shipParts)) {
+                            gameState.playerShips
+                                     .push_back(Ship(gameState.shipParts));
+                        } else {
+                            for (const ShipPart& sp : gameState.shipParts) {
+                                playerBoard(sp.x, sp.y, Token::Empty);
+                            }
+                        }
+
                         gameState.shipParts.clear();
                     }
                 }

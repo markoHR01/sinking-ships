@@ -21,4 +21,6 @@ class Ship {
         std::vector<ShipPart> ship;
 };
 
+bool shipIsValid(const std::vector<ShipPart>& ship);
+
 #endif
