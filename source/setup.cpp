@@ -3,6 +3,8 @@
 #include "constants.h"
 #include "board.h"
 
+static std::vector<ShipPart> shipParts;
+
 Scene runSetupScene(SDL_Renderer* renderer,
                     FontSet& fonts,
                     GameState& gameState) {
@@ -30,22 +32,22 @@ Scene runSetupScene(SDL_Renderer* renderer,
                 if (playerBoard(x, y) == Token::Empty) {
                     playerBoard(x, y, Token::PlayerShip);
 
-                    gameState.shipParts.push_back(ShipPart(x, y));
+                    shipParts.push_back(ShipPart(x, y));
 
                     int newShipIndex = gameState.playerShips.size();
                     size_t newShipSize = static_cast<size_t>(
                                          SHIP_LIST.at(newShipIndex));
-                    if (gameState.shipParts.size() == newShipSize) {
-                        if (shipIsValid(gameState.shipParts)) {
+                    if (shipParts.size() == newShipSize) {
+                        if (shipIsValid(shipParts)) {
                             gameState.playerShips
-                                     .push_back(Ship(gameState.shipParts));
+                                     .push_back(Ship(shipParts));
                         } else {
-                            for (const ShipPart& sp : gameState.shipParts) {
+                            for (const ShipPart& sp : shipParts) {
                                 playerBoard(sp.x, sp.y, Token::Empty);
                             }
                         }
 
-                        gameState.shipParts.clear();
+                        shipParts.clear();
                     }
                 }
             }
