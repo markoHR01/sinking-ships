@@ -2,8 +2,10 @@
 
 GameState::GameState()
            : inQueue(false),
-             playerBoard(nullptr) {}
+             playerBoard(nullptr),
+             enemyBoard(nullptr) {}
 
 GameState::~GameState() {
     delete playerBoard;
+    delete enemyBoard;
 }

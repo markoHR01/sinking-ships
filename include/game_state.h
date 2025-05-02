@@ -9,6 +9,7 @@ struct GameState {
     bool inQueue;
 
     Board* playerBoard;
+    Board* enemyBoard;
     std::vector<ShipPart> shipParts;
     std::vector<Ship> playerShips;
 
