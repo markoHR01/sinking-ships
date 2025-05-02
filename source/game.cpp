@@ -6,23 +6,40 @@
 Scene runGameScene(SDL_Renderer* renderer,
                    FontSet& fonts,
                    GameState& gameState) {
+    if (gameState.enemyBoard == nullptr) {
+        gameState.enemyBoard = new Board(BOARD_SIZE);
+    }
+
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             return Scene::Quit;
+        }
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+
+            int x = (mouseX - ENEMY_BOARD_X) / SECTOR_SIZE;
+            int y = (mouseY - ENEMY_BOARD_Y) / SECTOR_SIZE;
+
+            if (x >= 0 && x < BOARD_SIZE &&
+                y >= 0 && y < BOARD_SIZE) {
+                Board& enemyBoard = *gameState.enemyBoard;
+
+                if (enemyBoard(x, y) == Token::Empty) {
+                    enemyBoard(x, y, Token::Miss);
+                }
+            }
         }
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    Board playerBoard(BOARD_SIZE);
-    Board enemyBoard(BOARD_SIZE);
-
-    renderBoard(renderer, fonts.font28,
-                PLAYER_BOARD_X, PLAYER_BOARD_Y, playerBoard, SECTOR_SIZE);
-    renderBoard(renderer, fonts.font28,
-                ENEMY_BOARD_X, ENEMY_BOARD_Y, enemyBoard, SECTOR_SIZE);
+    renderBoard(renderer, fonts.font28, PLAYER_BOARD_X, PLAYER_BOARD_Y,
+                (*gameState.playerBoard), SECTOR_SIZE);
+    renderBoard(renderer, fonts.font28, ENEMY_BOARD_X, ENEMY_BOARD_Y,
+                (*gameState.enemyBoard), SECTOR_SIZE);
 
     SDL_Color green = {50, 150, 50, 255};
 
