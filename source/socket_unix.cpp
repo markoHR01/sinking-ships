@@ -13,7 +13,10 @@ bool UnixSocket::connect(const char* host, int port) {
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
-    serverAddr.sin_addr.s_addr = inet_addr(host);
+
+    if (inet_pton(AF_INET, host, &serverAddr.sin_addr) != 1) {
+        return false;
+    }
 
     if (::connect(socket,
                   reinterpret_cast<sockaddr*>(&serverAddr),
