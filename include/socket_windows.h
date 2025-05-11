@@ -9,7 +9,7 @@ class WindowsSocket : public Socket {
         ~WindowsSocket();
 
         bool connect(const char* host, int port) override;
-        bool send(const char* data, int length) override;
+        int send(const char* data, int length) override;
         int receive(char* buffer, int length) override;
         void close() override;
 };
