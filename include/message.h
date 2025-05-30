@@ -1,0 +1,20 @@
+#ifndef MESSAGE_H
+#define MESSAGE_H
+
+#include <string>
+#include <unordered_map>
+
+using MessageMap = std::unordered_map<std::string, std::string>;
+
+class Message {
+    public:
+        explicit Message(const MessageMap& m);
+
+        bool isType(const std::string& key) const;
+        std::string get(const std::string& key) const;
+
+    private:
+        MessageMap message;
+};
+
+#endif
