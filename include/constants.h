@@ -68,4 +68,8 @@ const int EXIT_BUTTON_Y = 540;
 const int EXIT_BUTTON_W = 150;
 const int EXIT_BUTTON_H = 50;
 
+// NETWORK
+
+const int SOCKET_SELECT_TIMEOUT = 100;
+
 #endif
