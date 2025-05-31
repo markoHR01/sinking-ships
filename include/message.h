@@ -10,7 +10,7 @@ class Message {
     public:
         explicit Message(const MessageMap& m);
 
-        bool isType(const std::string& key) const;
+        bool isType(const std::string& type) const;
         std::string get(const std::string& key) const;
 
     private:
