@@ -13,6 +13,11 @@ class Message {
         bool isType(const std::string& type) const;
         std::string get(const std::string& key) const;
 
+        const MessageMap& data() const { return message; };
+
+        static std::string serialize(const Message& message);
+        static Message deserialize(const char* data, int length);
+
     private:
         MessageMap message;
 };
