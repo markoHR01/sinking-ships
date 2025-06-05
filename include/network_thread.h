@@ -17,7 +17,7 @@ class NetworkThread {
         void start();
         void stop();
 
-        void sendMessage(const Message& msg);
+        void sendMessage(const Message& message);
         Message readMessage();
 
         std::atomic<bool> hasOutgoing;
