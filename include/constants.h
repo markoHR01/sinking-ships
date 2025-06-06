@@ -70,6 +70,8 @@ const int EXIT_BUTTON_H = 50;
 
 // NETWORK
 
+const char* SERVER_HOST = ""; // Missing server host
+const int SERVER_PORT = 0; // Missing server port
 const int SOCKET_SELECT_TIMEOUT = 100;
 
 #endif

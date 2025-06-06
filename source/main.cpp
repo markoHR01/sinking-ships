@@ -3,11 +3,17 @@
 #include "fonts.h"
 #include "scene.h"
 #include "game_state.h"
+#include "socket_factory.h"
+#include "network_thread.h"
 #include "constants.h"
 
 #include "menu.h"
 #include "setup.h"
 #include "game.h"
+
+#ifdef _WIN32
+#include <winsock2.h>
+#endif
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
@@ -28,19 +34,39 @@ int main() {
 
     GameState gameState;
 
+#ifdef _WIN32
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        return 1;
+    }
+#endif
+
+    Socket* socket = createSocket();
+    if (!socket) {
+        return 1;
+    }
+
+    if (!socket->connect(SERVER_HOST, SERVER_PORT)) {
+        delete socket;
+        return 1;
+    }
+
+    NetworkThread network(socket);
+    network.start();
+
     Scene currentScene = Scene::MainMenu;
     bool running = true;
 
     while(running) {
         switch (currentScene) {
             case Scene::MainMenu:
-                currentScene = runMainMenu(renderer, fonts, gameState);
+                currentScene = runMainMenu(renderer, fonts, gameState, network);
                 break;
             case Scene::Setup:
-                currentScene = runSetupScene(renderer, fonts, gameState);
+                currentScene = runSetupScene(renderer, fonts, gameState, network);
                 break;
             case Scene::Game:
-                currentScene = runGameScene(renderer, fonts, gameState);
+                currentScene = runGameScene(renderer, fonts, gameState, network);
                 break;
             case Scene::Quit:
                 running = false;
@@ -48,6 +74,13 @@ int main() {
         }
         SDL_Delay(16);
     }
+
+    network.stop();
+    delete socket;
+
+#ifdef _WIN32
+    WSACleanup();
+#endif
 
     TTF_CloseFont(fonts.font86);
     TTF_CloseFont(fonts.font28);
