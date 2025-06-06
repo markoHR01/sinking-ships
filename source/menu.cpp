@@ -4,7 +4,8 @@
 
 Scene runMainMenu(SDL_Renderer* renderer,
                   FontSet& fonts,
-                  GameState& gameState) {
+                  GameState& gameState,
+                  NetworkThread& network) {
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {

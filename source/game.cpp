@@ -5,7 +5,8 @@
 
 Scene runGameScene(SDL_Renderer* renderer,
                    FontSet& fonts,
-                   GameState& gameState) {
+                   GameState& gameState,
+                   NetworkThread& network) {
     if (gameState.enemyBoard == nullptr) {
         gameState.enemyBoard = new Board(BOARD_SIZE);
     }

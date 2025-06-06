@@ -7,7 +7,8 @@ static std::vector<ShipPart> shipParts;
 
 Scene runSetupScene(SDL_Renderer* renderer,
                     FontSet& fonts,
-                    GameState& gameState) {
+                    GameState& gameState,
+                    NetworkThread& network) {
     if (gameState.playerBoard == nullptr) {
         gameState.playerBoard = new Board(BOARD_SIZE);
     }
