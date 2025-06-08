@@ -6,6 +6,7 @@
 #include <vector>
 
 struct GameState {
+    bool serverResponsePending;
     bool inQueue;
 
     Board* playerBoard;

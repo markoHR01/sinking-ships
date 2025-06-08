@@ -1,7 +1,8 @@
 #include "game_state.h"
 
 GameState::GameState()
-           : inQueue(false),
+           : serverResponsePending(false),
+             inQueue(false),
              playerBoard(nullptr),
              enemyBoard(nullptr) {}
 
