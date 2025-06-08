@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "rendering.h"
+#include "message.h"
 #include "constants.h"
 
 Scene runMainMenu(SDL_Renderer* renderer,
@@ -11,7 +12,8 @@ Scene runMainMenu(SDL_Renderer* renderer,
         if (event.type == SDL_QUIT) {
             return Scene::Quit;
         }
-        if (event.type == SDL_MOUSEBUTTONDOWN) {
+        if (event.type == SDL_MOUSEBUTTONDOWN &&
+            !gameState.serverResponsePending) {
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
@@ -19,10 +21,29 @@ Scene runMainMenu(SDL_Renderer* renderer,
                                BUTTON_W, BUTTON_H};
             SDL_Point mouse = {mouseX, mouseY};
             if (SDL_PointInRect(&mouse, &button)) {
-                gameState.inQueue = !gameState.inQueue;
 
-                return Scene::MainMenu;
+                if (!gameState.inQueue) {
+                    network.sendMessage(Message({{"type": "JoinQueue"}}));
+                } else {
+                    network.sendMessage(Message({{"type": "LeaveQueue"}}));
+                }
+
+                gameState.serverResponsePending = true;
             }
+        }
+    }
+
+    if (gameState.serverResponsePending) {
+        Message serverResponse = network.readMessage();
+
+        if (serverResponse.isType("QueueJoined")) {
+            gameState.inQueue = true;
+            gameState.serverResponsePending = false;
+        }
+
+        if (serverResponse.isType("QueueLeft")) {
+            gameState.inQueue = false;
+            gameState.serverResponsePending = false;
         }
     }
 
