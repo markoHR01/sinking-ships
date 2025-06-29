@@ -4,10 +4,10 @@
 #include <cstring>
 
 NetworkThread::NetworkThread(Socket* s)
-               : socket(s),
-                 running(false),
-                 hasOutgoing(false), 
-                 hasIncoming(false) {}
+               : hasOutgoing(false),
+                 hasIncoming(false),
+                 socket(s),
+                 running(false) {}
 
 NetworkThread::~NetworkThread() {
     stop();
