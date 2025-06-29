@@ -23,9 +23,9 @@ Scene runMainMenu(SDL_Renderer* renderer,
             if (SDL_PointInRect(&mouse, &button)) {
 
                 if (!gameState.inQueue) {
-                    network.sendMessage(Message({{"type": "JoinQueue"}}));
+                    network.sendMessage(Message({{"type", "JoinQueue"}}));
                 } else {
-                    network.sendMessage(Message({{"type": "LeaveQueue"}}));
+                    network.sendMessage(Message({{"type", "LeaveQueue"}}));
                 }
 
                 gameState.serverResponsePending = true;
