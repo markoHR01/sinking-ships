@@ -72,6 +72,7 @@ const int EXIT_BUTTON_H = 50;
 
 constexpr const char* SERVER_HOST = "145.223.97.166";
 const int SERVER_PORT = 22335;
+const int CONNECT_TIMEOUT = 3000;
 const int SOCKET_SELECT_TIMEOUT = 100;
 
 #endif

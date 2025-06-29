@@ -9,7 +9,7 @@ WindowsSocket::WindowsSocket(SOCKET socket) : socket(socket) {}
 WindowsSocket::~WindowsSocket() { close(); }
 
 bool WindowsSocket::connect(const char* host, int port) {
-    sockaddr_in serverAddr;
+    sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
 
@@ -17,9 +17,39 @@ bool WindowsSocket::connect(const char* host, int port) {
         return false;
     }
 
-    if (::connect(socket,
-                  reinterpret_cast<sockaddr*>(&serverAddr),
-                  sizeof(serverAddr)) == SOCKET_ERROR) {
+    int status = ::connect(socket,
+                           reinterpret_cast<sockaddr*>(&serverAddr),
+                           sizeof(serverAddr));
+
+    if (status == 0) return true;
+
+    if (WSAGetLastError() != WSAEWOULDBLOCK) {
+        close();
+        return false;
+    }
+
+    fd_set writefds;
+    FD_ZERO(&writefds);
+    FD_SET(socket, &writefds);
+
+    timeval timeout{};
+    timeout.tv_sec = 0;
+    timeout.tv_usec = CONNECT_TIMEOUT * 1000;
+
+    int result = select(0, nullptr, &writefds, nullptr, &timeout);
+
+    if (result <= 0 || !FD_ISSET(socket, &writefds)) {
+        close();
+        return false;
+    }
+
+    int so_error = 0;
+    int len = sizeof(so_error);
+    if (getsockopt(socket,
+                   SOL_SOCKET,
+                   SO_ERROR,
+                   reinterpret_cast<char*>(&so_error),
+                   &len) != 0 || so_error != 0) {
         close();
         return false;
     }
@@ -32,7 +62,7 @@ int WindowsSocket::send(const char* data, int length) {
     FD_ZERO(&writefds);
     FD_SET(socket, &writefds);
 
-    timeval timeout;
+    timeval timeout{};
     timeout.tv_sec = 0;
     timeout.tv_usec = SOCKET_SELECT_TIMEOUT * 1000;
 
@@ -52,7 +82,7 @@ int WindowsSocket::receive(char* buffer, int length) {
     FD_ZERO(&readfds);
     FD_SET(socket, &readfds);
 
-    timeval timeout;
+    timeval timeout{};
     timeout.tv_sec = 0;
     timeout.tv_usec = SOCKET_SELECT_TIMEOUT * 1000;
 
