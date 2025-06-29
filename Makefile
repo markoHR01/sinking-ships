@@ -19,7 +19,9 @@ SOURCE += $(SRCDIR)/main.cpp               \
           $(SRCDIR)/board.cpp              \
           $(SRCDIR)/ship.cpp               \
           $(SRCDIR)/game_state.cpp         \
-          $(SRCDIR)/socket_factory.cpp
+          $(SRCDIR)/socket_factory.cpp     \
+          $(SRCDIR)/message.cpp            \
+          $(SRCDIR)/network_thread.cpp
 
 OBJECTS := $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SOURCE))
 
