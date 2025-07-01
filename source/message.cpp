@@ -23,6 +23,7 @@ std::string Message::serialize(const Message& message) {
     for (const auto& [key, value] : data) {
         serialized += key + "=" + value + "\n";
     }
+    serialized += "STOP\n";
 
     return serialized;
 }
