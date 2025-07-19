@@ -1,4 +1,9 @@
 build/
-.o
+*.o
 
+# Unix
 sinking-ships
+
+# Windows
+*.exe
+*.dll
