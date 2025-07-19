@@ -1,3 +1,6 @@
+#ifdef _WIN32
+#define SDL_MAIN_HANDLED
+#endif
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "fonts.h"
@@ -13,6 +16,14 @@
 
 #ifdef _WIN32
 #include <winsock2.h>
+#include <windows.h>
+
+int main();
+
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+    return main();
+}
+
 #endif
 
 SDL_Window* window = nullptr;
