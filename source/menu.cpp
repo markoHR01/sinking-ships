@@ -33,6 +33,16 @@ Scene runMainMenu(SDL_Renderer* renderer,
         }
     }
 
+    if (gameState.inQueue) {
+        Message serverResponse = network.readMessage();
+
+        if (serverResponse.isType("MatchFound")) {
+            gameState.serverResponsePending = false;
+            gameState.inQueue = false;
+            return Scene::Setup;
+        }
+    }
+
     if (gameState.serverResponsePending) {
         Message serverResponse = network.readMessage();
 
