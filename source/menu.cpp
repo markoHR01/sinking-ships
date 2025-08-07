@@ -33,28 +33,22 @@ Scene runMainMenu(SDL_Renderer* renderer,
         }
     }
 
-    if (gameState.inQueue) {
-        Message serverResponse = network.readMessage();
+    Message serverResponse = network.readMessage();
 
-        if (serverResponse.isType("MatchFound")) {
-            gameState.serverResponsePending = false;
-            gameState.inQueue = false;
-            return Scene::Setup;
-        }
+    if (serverResponse.isType("MatchFound")) {
+        gameState.serverResponsePending = false;
+        gameState.inQueue = false;
+        return Scene::Setup;
     }
 
-    if (gameState.serverResponsePending) {
-        Message serverResponse = network.readMessage();
+    if (serverResponse.isType("QueueJoined")) {
+        gameState.serverResponsePending = false;
+        gameState.inQueue = true;
+    }
 
-        if (serverResponse.isType("QueueJoined")) {
-            gameState.inQueue = true;
-            gameState.serverResponsePending = false;
-        }
-
-        if (serverResponse.isType("QueueLeft")) {
-            gameState.inQueue = false;
-            gameState.serverResponsePending = false;
-        }
+    if (serverResponse.isType("QueueLeft")) {
+        gameState.serverResponsePending = false;
+        gameState.inQueue = false;
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
