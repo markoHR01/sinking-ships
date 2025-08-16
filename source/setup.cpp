@@ -3,6 +3,10 @@
 #include "constants.h"
 #include "board.h"
 
+#include <chrono>
+#include <format>
+#include <string>
+
 static std::vector<ShipPart> shipParts;
 
 Scene runSetupScene(SDL_Renderer* renderer,
@@ -13,12 +17,21 @@ Scene runSetupScene(SDL_Renderer* renderer,
         gameState.playerBoard = new Board(BOARD_SIZE);
     }
 
+    auto frameTime = std::chrono::steady_clock::now();
+    auto setupTime = std::chrono
+                        ::duration_cast<std::chrono::seconds>
+                        (frameTime - gameState.setupStartTime)
+                        .count();
+    int timeRemaining = SETUP_TIMELIMIT - static_cast<int>(setupTime);
+    if (timeRemaining < 0) timeRemaining = 0;
+
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             return Scene::Quit;
         }
-        if (event.type == SDL_MOUSEBUTTONDOWN &&
+        if (timeRemaining > 0 &&
+            event.type == SDL_MOUSEBUTTONDOWN &&
             gameState.playerShips.size() < SHIP_LIST.size()) {
             int mouseX = event.button.x;
             int mouseY = event.button.y;
@@ -55,6 +68,49 @@ Scene runSetupScene(SDL_Renderer* renderer,
         }
     }
 
+    if (timeRemaining == 0) {
+
+       if (!gameState.serverResponsePending) {
+           MessageMap shipPositions;
+           shipPositions["type"] = "ShipPositions";
+
+           int i = 0;
+           for (const Ship& s : gameState.playerShips) {
+               for (const ShipPart& sp : s.shipParts()) {
+                   std::string position = std::format("X{}Y{}", sp.x, sp.y);
+                   shipPositions[std::to_string(i)] = position;
+                   i++;
+               }
+           }
+
+           network.sendMessage(shipPositions);
+           gameState.serverResponsePending = true;
+       } else {
+           Message serverResponse = network.readMessage();
+
+           if (static_cast<int>(setupTime) > SETUP_TIME_TOTAL ||
+               serverResponse.isType("MatchQuit")) {
+               gameState.serverResponsePending = false;
+
+               delete gameState.playerBoard;
+               gameState.playerBoard = nullptr;
+               gameState.playerShips.clear();
+               shipParts.clear();
+
+               return Scene::MainMenu;
+           }
+
+           if (serverResponse.isType("MatchStart")) {
+               gameState.serverResponsePending = false;
+
+               gameState.isPlayerTurn = serverResponse.get("start-first") == "true";
+               shipParts.clear();
+
+               return Scene::Game;
+           }
+       }
+    }
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -76,7 +132,11 @@ Scene runSetupScene(SDL_Renderer* renderer,
 
     SDL_Color white = {255, 255, 255, 255};
 
-    renderText(renderer, fonts.font28, "00:45",
+    int minutes = timeRemaining / 60;
+    int seconds = timeRemaining % 60;
+    std::string timerText = std::format("{:02}:{:02}", minutes, seconds);
+
+    renderText(renderer, fonts.font28, timerText,
                TIMER_SETUP_X, TIMER_SETUP_Y, white);
 
     SDL_RenderPresent(renderer);
