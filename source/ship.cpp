@@ -29,6 +29,10 @@ int Ship::health() const {
     return sum;
 }
 
+const std::vector<ShipPart>& Ship::shipParts() const {
+    return ship;
+}
+
 bool shipIsValid(const std::vector<ShipPart>& ship) {
     if (ship.empty()) return false;
 

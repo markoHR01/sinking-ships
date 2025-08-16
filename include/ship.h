@@ -17,6 +17,8 @@ class Ship {
         bool hit(int x, int y);
         int health() const;
 
+        const std::vector<ShipPart>& shipParts() const;
+
     private:
         std::vector<ShipPart> ship;
 };
