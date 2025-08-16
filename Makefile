@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Iinclude
+CXXFLAGS = -Wall -std=c++20 -Iinclude
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJDIR = build
 SRCDIR = source
