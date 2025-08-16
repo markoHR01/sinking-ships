@@ -75,4 +75,9 @@ const int SERVER_PORT = 22335;
 const int CONNECT_TIMEOUT = 3000;
 const int SOCKET_SELECT_TIMEOUT = 100;
 
+// SERVER
+
+const int SETUP_TIMELIMIT = 25;
+const int SETUP_TIME_TOTAL = SETUP_TIMELIMIT + 3;
+
 #endif
