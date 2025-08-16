@@ -83,7 +83,7 @@ Scene runSetupScene(SDL_Renderer* renderer,
                }
            }
 
-           network.sendMessage(shipPositions);
+           network.sendMessage(Message(shipPositions));
            gameState.serverResponsePending = true;
        } else {
            Message serverResponse = network.readMessage();
