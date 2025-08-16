@@ -3,6 +3,8 @@
 #include "message.h"
 #include "constants.h"
 
+#include <chrono>
+
 Scene runMainMenu(SDL_Renderer* renderer,
                   FontSet& fonts,
                   GameState& gameState,
@@ -38,6 +40,7 @@ Scene runMainMenu(SDL_Renderer* renderer,
     if (serverResponse.isType("MatchFound")) {
         gameState.serverResponsePending = false;
         gameState.inQueue = false;
+        gameState.setupStartTime = std::chrono::steady_clock::now();
         return Scene::Setup;
     }
 
