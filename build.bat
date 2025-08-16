@@ -5,7 +5,7 @@ set SDL2_DIR=C:\dev\libs\SDL2
 set SDL2_TTF_DIR=C:\dev\libs\SDL2_ttf
 
 set CXX=g++
-set CXXFLAGS=-Wall -Iinclude ^
+set CXXFLAGS=-Wall -std=c++20 -Iinclude ^
              -I%SDL2_DIR%\include ^
              -I%SDL2_DIR%\include\SDL2 ^
              -I%SDL2_TTF_DIR%\include
