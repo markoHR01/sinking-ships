@@ -4,7 +4,9 @@ GameState::GameState()
            : serverResponsePending(false),
              inQueue(false),
              playerBoard(nullptr),
-             enemyBoard(nullptr) {}
+             enemyBoard(nullptr),
+             playerShipSunk{},
+             enemyShipSunk{} {}
 
 GameState::~GameState() {
     delete playerBoard;

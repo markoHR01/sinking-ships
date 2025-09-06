@@ -3,6 +3,8 @@
 
 #include "board.h"
 #include "ship.h"
+#include "constants.h"
+#include <array>
 #include <vector>
 #include <chrono>
 
@@ -16,6 +18,8 @@ struct GameState {
     Board* enemyBoard;
     int playerShipPoints;
     int enemyShipPoints;
+    std::array<bool, SHIP_SUNK_TOTAL> playerShipSunk;
+    std::array<bool, SHIP_SUNK_TOTAL> enemyShipSunk;
 
     std::vector<Ship> playerShips;
     std::chrono::steady_clock::time_point setupStartTime;
