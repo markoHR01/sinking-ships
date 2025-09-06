@@ -37,6 +37,7 @@ const int SUBMARINE_SIZE = 3;
 const int CRUISER_SIZE = 3;
 const int BATTLESHIP_SIZE = 4;
 const int AIRCRAFT_CARRIER_SIZE = 5;
+const int SHIP_POINTS_TOTAL = 17;
 
 const std::array<int, 5> SHIP_LIST = {
     DESTROYER_SIZE,

@@ -104,7 +104,11 @@ Scene runSetupScene(SDL_Renderer* renderer,
                gameState.serverResponsePending = false;
 
                gameState.isPlayerTurn = serverResponse.get("start-first") == "true";
+               gameState.playerShipPoints = SHIP_POINTS_TOTAL;
+               gameState.enemyShipPoints = SHIP_POINTS_TOTAL;
                shipParts.clear();
+
+               gameState.turnStartTime = std::chrono::steady_clock::now();
 
                return Scene::Game;
            }
