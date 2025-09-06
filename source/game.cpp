@@ -3,6 +3,9 @@
 #include "constants.h"
 #include "board.h"
 
+#include <array>
+#include <string>
+
 Scene runGameScene(SDL_Renderer* renderer,
                    FontSet& fonts,
                    GameState& gameState,
@@ -65,30 +68,28 @@ Scene runGameScene(SDL_Renderer* renderer,
                 (*gameState.enemyBoard), SECTOR_SIZE);
 
     SDL_Color green = {50, 150, 50, 255};
+    SDL_Color red   = {150, 50, 50, 255};
+    SDL_Color gray  = {150, 150, 150, 255};
 
-    renderText(renderer, fonts.font24, "5. Nosač Zrakoplova (5X)",
-               PLAYER_SHIPS_X, PLAYER_SHIPS_Y, green);
-    renderText(renderer, fonts.font24, "4. Bojni Brod (4X)",
-               PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD, green);
-    renderText(renderer, fonts.font24, "3. Krstarica (3X)",
-               PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD * 2, green);
-    renderText(renderer, fonts.font24, "2. Podmornica (3X)",
-               PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD * 3, green);
-    renderText(renderer, fonts.font24, "1. Razarač (2X)",
-               PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD * 4, green);
+    std::array<std::string, 5> shipNames = {
+        "5. Nosač Zrakoplova (5X)",
+        "4. Bojni Brod (4X)",
+        "3. Krstarica (3X)",
+        "2. Podmornica (3X)",
+        "1. Razarač (2X)"
+    };
 
-    SDL_Color red = {150, 50, 50, 255};
+    for (size_t i = 0; shipNames.size(); ++i) {
+        SDL_Color shipColor = gameState.playerShipSunk[i] ? gray : green;
+        renderText(renderer, fonts.font24, shipNames[i],
+                   PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
+    }
 
-    renderText(renderer, fonts.font24, "5. Nosač Zrakoplova (5X)",
-               ENEMY_SHIPS_X, ENEMY_SHIPS_Y, red);
-    renderText(renderer, fonts.font24, "4. Bojni Brod (4X)",
-               ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD, red);
-    renderText(renderer, fonts.font24, "3. Krstarica (3X)",
-               ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * 2, red);
-    renderText(renderer, fonts.font24, "2. Podmornica (3X)",
-               ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * 3, red);
-    renderText(renderer, fonts.font24, "1. Razarač (2X)",
-               ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * 4, red);
+    for (size_t i = 0; shipNames.size(); ++i) {
+        SDL_Color shipColor = gameState.enemyShipSunk[i] ? gray : red;
+        renderText(renderer, fonts.font24, shipNames[i],
+                   ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
+    }
 
     renderText(renderer, fonts.font28, "(17)",
                PLAYER_FLEET_X, PLAYER_FLEET_Y, green);
