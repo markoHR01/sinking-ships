@@ -5,6 +5,8 @@
 
 #include <array>
 #include <string>
+#include <format>
+#include <chrono>
 
 Scene runGameScene(SDL_Renderer* renderer,
                    FontSet& fonts,
@@ -13,6 +15,14 @@ Scene runGameScene(SDL_Renderer* renderer,
     if (gameState.enemyBoard == nullptr) {
         gameState.enemyBoard = new Board(BOARD_SIZE);
     }
+
+    auto frameTime = std::chrono::steady_clock::now();
+    auto turnTime = std::chrono
+                       ::duration_cast<std::chrono::seconds>
+                       (frameTime - gameState.turnStartTime)
+                       .count();
+    int timeRemaining = TURN_TIMELIMIT - static_cast<int>(turnTime);
+    if (timeRemaining < 0) timeRemaining = 0;
 
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -99,8 +109,25 @@ Scene runGameScene(SDL_Renderer* renderer,
     renderText(renderer, fonts.font28, enemyPoints,
                ENEMY_FLEET_X, ENEMY_FLEET_Y, red);
 
-    renderText(renderer, fonts.font28, "00:15",
-               TIMER_GAME_X, TIMER_GAME_Y, red);
+    std::string timerText;
+    SDL_Color timerColor;
+    if (!gameState.isGameOver()) {
+        int minutes = timeRemaining / 60;
+        int seconds = timeRemaining % 60;
+        timerText = std::format("{:02}:{:02}", minutes, seconds);
+        timerColor = gameState.isPlayerTurn ? green : red;
+    } else {
+        if (gameState.playerShipPoints == 0) {
+            timerText = "Poraz";
+            timerColor = red;
+        } else {
+            timerText = "Pobjeda";
+            timerColor = green;
+        }
+    }
+
+    renderText(renderer, fonts.font28, timerText,
+               TIMER_GAME_X, TIMER_GAME_Y, timerColor);
 
     SDL_Rect exitButton = {EXIT_BUTTON_X, EXIT_BUTTON_Y,
                            EXIT_BUTTON_W, EXIT_BUTTON_H};

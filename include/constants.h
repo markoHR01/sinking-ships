@@ -81,5 +81,6 @@ const int SOCKET_SELECT_TIMEOUT = 100;
 
 const int SETUP_TIMELIMIT = 25;
 const int SETUP_TIME_TOTAL = SETUP_TIMELIMIT + 3;
+const int TURN_TIMELIMIT = 10;
 
 #endif
