@@ -91,9 +91,12 @@ Scene runGameScene(SDL_Renderer* renderer,
                    ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
     }
 
-    renderText(renderer, fonts.font28, "(17)",
+    auto playerPoints = "(" + std::to_string(gameState.playerShipPoints) + ")";
+    auto enemyPoints = "(" + std::to_string(gameState.enemyShipPoints) + ")";
+
+    renderText(renderer, fonts.font28, playerPoints,
                PLAYER_FLEET_X, PLAYER_FLEET_Y, green);
-    renderText(renderer, fonts.font28, "(17)",
+    renderText(renderer, fonts.font28, enemyPoints,
                ENEMY_FLEET_X, ENEMY_FLEET_Y, red);
 
     renderText(renderer, fonts.font28, "00:15",
