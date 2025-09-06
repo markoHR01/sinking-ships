@@ -20,6 +20,28 @@ Scene runGameScene(SDL_Renderer* renderer,
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
+            SDL_Rect button = {EXIT_BUTTON_X, EXIT_BUTTON_Y,
+                               EXIT_BUTTON_W, EXIT_BUTTON_H};
+            SDL_Point mouse = {mouseX, mouseY};
+            if (SDL_PointInRect(&mouse, &button)) {
+                gameState.serverResponsePending = false;
+
+                gameState.playerShipSunk.fill(false);
+                gameState.enemyShipSunk.fill(false);
+
+                delete gameState.enemyBoard;
+                gameState.enemyBoard = nullptr;
+                delete gameState.playerBoard;
+                gameState.playerBoard = nullptr;
+                gameState.playerShips.clear();
+
+                return Scene::MainMenu;
+            }
+        }
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+
             int x = (mouseX - ENEMY_BOARD_X) / SECTOR_SIZE;
             int y = (mouseY - ENEMY_BOARD_Y) / SECTOR_SIZE;
 
