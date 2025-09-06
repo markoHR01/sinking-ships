@@ -12,3 +12,7 @@ GameState::~GameState() {
     delete playerBoard;
     delete enemyBoard;
 }
+
+GameState::isGameOver() const {
+    return playerShipPoints == 0 || enemyShipPoints == 0;
+}
