@@ -134,6 +134,15 @@ Scene runGameScene(SDL_Renderer* renderer,
         gameState.turnStartTime = std::chrono::steady_clock::now();
     }
 
+    if (serverResponse.isType("MatchQuit")) {
+        for (int x = 0; x < BOARD_SIZE; ++x) {
+            for (int y = 0; y < BOARD_SIZE; ++y) {
+                (*gameState.playerBoard)(x, y, Token::Miss);
+                (*gameState.enemyBoard)(x, y, Token::Miss);
+            }
+        }
+    }
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
