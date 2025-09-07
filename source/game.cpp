@@ -104,6 +104,36 @@ Scene runGameScene(SDL_Renderer* renderer,
         }
     }
 
+    if (serverResponse.isType("EnemyAttack")) {
+        gameState.isPlayerTurn = true;
+
+        gameState.turnStartTime = std::chrono::steady_clock::now();
+
+        Board& playerBoard = *gameState.playerBoard;
+
+        int x = std::stoi(serverResponse.get("X"));
+        int y = std::stoi(serverResponse.get("Y"));
+        for (size_t i = 0; i < gameState.playerShips.size(); ++i) {
+            if (gameState.playerShips[i].hit(x, y)) {
+                playerBoard(x, y, Token::PlayerShipHit);
+                gameState.playerShipPoints -= 1;
+
+                if (gameState.playerShips[i].health() == 0) {
+                    gameState.playerShipSunk[i] = true;
+                }
+            }
+        }
+        if (playerBoard(x, y) != Token::PlayerShipHit) {
+            playerBoard(x, y, Token::Miss);
+        }
+    }
+
+    if (serverResponse.isType("NoAttack")) {
+        gameState.isPlayerTurn = true;
+
+        gameState.turnStartTime = std::chrono::steady_clock::now();
+    }
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
