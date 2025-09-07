@@ -51,7 +51,11 @@ Scene runGameScene(SDL_Renderer* renderer,
                 return Scene::MainMenu;
             }
         }
-        if (event.type == SDL_MOUSEBUTTONDOWN) {
+        if (event.type == SDL_MOUSEBUTTONDOWN
+            timeRemaining > 0 &&
+            !gameState.serverResponsePending &&
+            !gameState.isGameOver() &&
+            gameState.isPlayerTurn()) {
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
@@ -63,8 +67,39 @@ Scene runGameScene(SDL_Renderer* renderer,
                 Board& enemyBoard = *gameState.enemyBoard;
 
                 if (enemyBoard(x, y) == Token::Empty) {
-                    enemyBoard(x, y, Token::Miss);
+                    MessageMap attack;
+                    attack["type"] = "Attack";
+                    attack["X"] = std::to_string(x);
+                    attack["Y"] = std::to_string(y);
+
+                    network.sendMessage(Message(attack));
+                    gameState.serverResponsePending = true;
                 }
+            }
+        }
+    }
+
+    Message serverResponse = network.readMessage();
+
+    if (serverResponse.isType("AttackResult")) {
+        gameState.serverResponsePending = false;
+        gameState.isPlayerTurn = false;
+
+        gameState.turnStartTime = std::chrono::steady_clock::now();
+
+        Board& enemyBoard = *gameState.enemyBoard;
+
+        if (serverResponse.get("hit") == "false") {
+            enemyBoard(x, y, Token::Miss);
+        } else {
+            int x = std::stoi(serverResponse.get("X"));
+            int y = std::stoi(serverResponse.get("Y"));
+            enemyBoard(x, y, Token::EnemyShip);
+            gameState.enemyShipPoints -= 1;
+
+            if (serverResponse.get("sunk") == "true") {
+                int i = std::stoi(serverResponse.get("sunk-index"));
+                gameState.enemyShipSunk[i] = true;
             }
         }
     }
