@@ -163,13 +163,13 @@ Scene runGameScene(SDL_Renderer* renderer,
         "1. Razarač (2X)"
     };
 
-    for (size_t i = 0; shipNames.size(); ++i) {
+    for (size_t i = 0; i < shipNames.size(); ++i) {
         SDL_Color shipColor = gameState.playerShipSunk[i] ? gray : green;
         renderText(renderer, fonts.font24, shipNames[i],
                    PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
     }
 
-    for (size_t i = 0; shipNames.size(); ++i) {
+    for (size_t i = 0; i < shipNames.size(); ++i) {
         SDL_Color shipColor = gameState.enemyShipSunk[i] ? gray : red;
         renderText(renderer, fonts.font24, shipNames[i],
                    ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
