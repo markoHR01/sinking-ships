@@ -25,7 +25,7 @@ struct GameState {
     std::chrono::steady_clock::time_point setupStartTime;
     std::chrono::steady_clock::time_point turnStartTime;
 
-    bool isGameOver() const {};
+    bool isGameOver() const;
 
     GameState();
     ~GameState();

@@ -13,6 +13,6 @@ GameState::~GameState() {
     delete enemyBoard;
 }
 
-GameState::isGameOver() const {
+bool GameState::isGameOver() const {
     return playerShipPoints == 0 || enemyShipPoints == 0;
 }

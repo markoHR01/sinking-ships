@@ -51,11 +51,11 @@ Scene runGameScene(SDL_Renderer* renderer,
                 return Scene::MainMenu;
             }
         }
-        if (event.type == SDL_MOUSEBUTTONDOWN
+        if (event.type == SDL_MOUSEBUTTONDOWN &&
             timeRemaining > 0 &&
             !gameState.serverResponsePending &&
             !gameState.isGameOver() &&
-            gameState.isPlayerTurn()) {
+            gameState.isPlayerTurn) {
             int mouseX = event.button.x;
             int mouseY = event.button.y;
 
@@ -89,11 +89,11 @@ Scene runGameScene(SDL_Renderer* renderer,
 
         Board& enemyBoard = *gameState.enemyBoard;
 
+        int x = std::stoi(serverResponse.get("X"));
+        int y = std::stoi(serverResponse.get("Y"));
         if (serverResponse.get("hit") == "false") {
             enemyBoard(x, y, Token::Miss);
         } else {
-            int x = std::stoi(serverResponse.get("X"));
-            int y = std::stoi(serverResponse.get("Y"));
             enemyBoard(x, y, Token::EnemyShip);
             gameState.enemyShipPoints -= 1;
 
