@@ -129,7 +129,7 @@ Scene runGameScene(SDL_Renderer* renderer,
     }
 
     if (serverResponse.isType("NoAttack")) {
-        gameState.isPlayerTurn = true;
+        gameState.isPlayerTurn = !gameState.isPlayerTurn;
 
         gameState.turnStartTime = std::chrono::steady_clock::now();
     }
