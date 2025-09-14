@@ -164,13 +164,15 @@ Scene runGameScene(SDL_Renderer* renderer,
     };
 
     for (size_t i = 0; i < shipNames.size(); ++i) {
-        SDL_Color shipColor = gameState.playerShipSunk[i] ? gray : green;
+        bool isSunk = gameState.playerShipSunk[SHIP_SUNK_TOTAL - 1 - i];
+        SDL_Color shipColor = isSunk ? gray : green;
         renderText(renderer, fonts.font24, shipNames[i],
                    PLAYER_SHIPS_X, PLAYER_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
     }
 
     for (size_t i = 0; i < shipNames.size(); ++i) {
-        SDL_Color shipColor = gameState.enemyShipSunk[i] ? gray : red;
+        bool isSunk = gameState.enemyShipSunk[SHIP_SUNK_TOTAL - 1 - i];
+        SDL_Color shipColor = isSunk ? gray : red;
         renderText(renderer, fonts.font24, shipNames[i],
                    ENEMY_SHIPS_X, ENEMY_SHIPS_Y + SHIP_GAME_YADD * i, shipColor);
     }
